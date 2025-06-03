@@ -58,6 +58,8 @@
     --form-wizard-step-legend-font-size: 1.1rem;
     --form-field-gap: 5px;
 
+    --default-column-span: 6;
+
     /* Card styling variables */
     --form-card-border-color: #e0e0e0;
     --form-card-border-radius: 4px;
@@ -248,7 +250,7 @@ main .form form .repeat-wrapper,
 main .form form .field-wrapper {
     margin: var(--form-field-gap);
     color: var(--form-label-color);
-    grid-column: span 12;
+    grid-column: span var(--default-column-span)
 }
 
 main .form form p {
