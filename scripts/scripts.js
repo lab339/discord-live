@@ -12,6 +12,24 @@ import {
   loadCSS,
 } from './aem.js';
 
+
+/**
+ * Clean up variant classes
+ * Ex: marquee--small--contained- -> marquee small contained
+ * @param {HTMLElement} parent
+ */
+export function cleanVariations(parent) {
+  const variantBlocks = parent.querySelectorAll('[class$="-"]');
+  return Array.from(variantBlocks).map((variant) => {
+    const { className } = variant;
+    const classNameClipped = className.slice(0, -1);
+    variant.classList.remove(className);
+    const classNames = classNameClipped.split('--');
+    variant.classList.add(...classNames);
+    return variant;
+  });
+}
+
 /**
  * Moves all the attributes from a given elmenet to another given element.
  * @param {Element} from the element to copy attributes from
@@ -127,6 +145,7 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 }
+
 
 /**
  * Loads everything that happens a lot later,
