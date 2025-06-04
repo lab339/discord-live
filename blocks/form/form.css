@@ -770,6 +770,8 @@ main div.form-wrapper {
     background: white;
     padding: 40px;
     border-radius: 12px;
+    margin: 0 auto;
+    max-width: var(--grid-desktop-container-width);
 }
 
 /* Responsive adjustments for mobile */
