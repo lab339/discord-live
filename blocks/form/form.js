@@ -416,22 +416,26 @@ function extractFormDefinition(block) {
   return { container, formDef };
 }
 
-export async function fetchForm(pathname) {
+export async function fetchForm(container) {
   // get the main form
   let data;
+  const { pathname } = new URL(container.href);
   let path = pathname;
-  if (path.startsWith(window.location.origin) && !path.includes('.json')) {
+  const aemPage = container.innerText?.match(/^https:\/\/[^./]*\.aem\.page\//)?.input;
+  if (path.startsWith(window.location.origin) && !path.includes('.json') && !aemPage) {
     if (path.endsWith('.html')) {
       path = path.substring(0, path.lastIndexOf('.html'));
     }
     path += '/jcr:content/root/section/form.html';
+  }
+  if (aemPage) {
+    path = aemPage;
   }
   let resp = await fetch(path);
 
   if (resp?.headers?.get('Content-Type')?.includes('application/json')) {
     data = await resp.json();
   } else if (resp?.headers?.get('Content-Type')?.includes('text/html')) {
-    resp = await fetch(path);
     data = await resp.text().then((html) => {
       try {
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -455,7 +459,7 @@ export default async function decorate(block) {
   let pathname;
   if (container) {
     ({ pathname } = new URL(container.href));
-    formDef = await fetchForm(container.href);
+    formDef = await fetchForm(container);
   } else {
     ({ container, formDef } = extractFormDefinition(block));
   }
