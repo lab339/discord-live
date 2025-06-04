@@ -43,17 +43,20 @@ class Gnav {
     }
 
     const ctaButtonWrapper = this.decorateCTAButton();
-    const mobileCTAButton = ctaButtonWrapper.cloneNode(true);
-
     const mainNav = this.decorateHeaderMainNav();
-    mobileCTAButton.classList.add('mobile');
-    mainNav.append(mobileCTAButton);
+    if (ctaButtonWrapper) {
+      const mobileCTAButton = ctaButtonWrapper.cloneNode(true);
+
+      mobileCTAButton.classList.add('mobile');
+      mainNav.append(mobileCTAButton);
+    }
+
     if (mainNav) {
       nav.append(mainNav);
     }
 
-    ctaButtonWrapper.classList.add('desktop');
     if (ctaButtonWrapper) {
+      ctaButtonWrapper.classList.add('desktop');
       nav.append(ctaButtonWrapper);
     }
 
@@ -128,16 +131,17 @@ class Gnav {
 
   // left logo + brand name
   decorateBrandLogo = () => {
-    const brandBlock = this.body.querySelector('.gnav-brand');
+    let brandBlock = this.body.querySelector('.gnav-brand') ||
+    this.body.querySelector('div:nth-child(1)');
     if (!brandBlock) return null;
 
     const brand = brandBlock.querySelector('a');
     brand.classList.add('gnav-brand', 'link-highlight-colorful-effect-hover-wrapper');
     brand.innerHTML = `<span class="link-highlight-colorful-effect">${brand.textContent}</span>`;
 
-    if (brandBlock.classList.contains('with-logo')) {
-      brand.insertAdjacentHTML('afterbegin', BRAND_LOGO);
-    }
+    //if (brandBlock.classList.contains('with-logo')) {
+    brand.insertAdjacentHTML('afterbegin', BRAND_LOGO);
+    //}
     return brand;
   };
 
@@ -286,15 +290,17 @@ class Gnav {
   // right side cta button
   decorateCTAButton = () => {
     const ctaButton = this.body.querySelector('.adobe-cta a');
-    ctaButton.classList.add('gnav-cta-button', 'button');
-    ctaButton.setAttribute('aria-label', ctaButton.textContent);
-    const ctaText = ctaButton.textContent;
-    const ctaTextWrapper = createTag('span', { }, ctaText);
+    if (ctaButton) {
+      ctaButton.classList.add('gnav-cta-button', 'button');
+      ctaButton.setAttribute('aria-label', ctaButton.textContent);
+      const ctaText = ctaButton.textContent;
+      const ctaTextWrapper = createTag('span', { }, ctaText);
 
-    ctaButton.innerHTML = '';
-    ctaButton.append(ctaTextWrapper);
-    const ctaButtonWrapper = createTag('div', { class: 'gnav-cta-button-wrapper' }, ctaButton);
-    return ctaButtonWrapper;
+      ctaButton.innerHTML = '';
+      ctaButton.append(ctaTextWrapper);
+      const ctaButtonWrapper = createTag('div', { class: 'gnav-cta-button-wrapper' }, ctaButton);
+      return ctaButtonWrapper;
+    }
   };
 
   // search on mobile menu (Disabled for now)
