@@ -239,6 +239,10 @@ main .form form fieldset.radio-group-wrapper > legend {
     padding-left: 0;
 }
 
+main .form form button {
+    transition: unset;
+}
+
 main .form label.required::after {
     content: "*";
     color: var(--form-label-color);
