@@ -2753,7 +2753,7 @@ const urlEncoded = (data) => {
     });
     return formData;
 };
-const submit = async (context, success, error, submitAs = 'multipart/form-data', input_data = null, action = '', metadata = null) => {
+const submit = async (context, success, error, submitAs = 'application/json', input_data = null, action = '', metadata = null) => {
     const endpoint = action || context.form.action;
     let data = input_data;
     const attachments = await readAttachments(context.form, true);
