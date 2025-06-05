@@ -9,9 +9,16 @@ export default function decorate(block) {
       observer.disconnect();
 
       const container = block.querySelector('a[href]');
-      // get the pathname from the href
-      const { pathname } = new URL(container.href);
-      const form = await loadFragment(pathname);
+      const aemPage = container.innerText?.match(/^https:\/\/[^./]*\.aem\.page\//);
+      let url = "";
+      // if current hostname is not aem Page[0]
+      if (window.location.hostname !== aemPage[0].split('/')[2]) {
+        url = container.innerText;
+      } else {
+        const { pathname } = new URL(container.href);
+        url = pathname;
+      }
+      const form = await loadFragment(url);
       block.replaceChildren(form.children[0]);
     }
   });
