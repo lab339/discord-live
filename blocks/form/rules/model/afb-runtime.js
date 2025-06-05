@@ -2685,6 +2685,7 @@ const request = async (context, uri, httpVerb, payload, success, error, headers)
     }
     else if (payload instanceof FormData) {
         inputPayload = payload;
+        requestOptions.headers = headers;
     }
     else if (payload && (typeof payload === 'string' || (typeof payload === 'object' && Object.keys(payload).length > 0))) {
         const headerNames = Object.keys(headers);
